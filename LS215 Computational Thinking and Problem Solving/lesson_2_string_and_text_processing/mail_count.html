@@ -1,0 +1,30 @@
+<script src="https://dbdwvr6p7sskw.cloudfront.net/210/files/email_data_v2.js"></script>
+<script>
+  function mailCount(emailData) {
+    let messages = emailData.split('##||##');
+    let messageDates = messages.map(message => message.split('#/#')[2]);
+
+    console.log(`Count of Email: ${String(messages.length)}`);
+    console.log(`Date Range: ${displayDateRange(messageDates)}`);
+  }
+
+  function displayDateRange(dates) {
+    let dateObjects = getDateObjects(dates);
+    dateObjects.sort((firstDate, secondDate) => firstDate.valueOf() - secondDate.valueOf());
+    return `${dateObjects[0].toDateString()} - ${dateObjects[dateObjects.length - 1].toDateString()}`;
+  }
+
+  function getDateObjects(dates) {
+    let dateObjects = dates.map(date => {
+      let dateParts = date.split(' ')[1].split('-');
+      let monthIndex = parseInt(dateParts[0], 10) - 1;
+      let day = parseInt(dateParts[1], 10);
+      let year = parseInt(dateParts[2], 10);
+      return new Date(year, monthIndex, day);
+    });
+  
+    return dateObjects;
+  }
+
+  mailCount(emailData);
+</script>
